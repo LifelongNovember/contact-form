@@ -31,7 +31,11 @@ function wpcf7_submit_form_tag_handler( $tag ) {
 
 	$atts = wpcf7_format_atts( $atts );
 
-	$html = sprintf( '<input %1$s />', $atts );
+  $html = sprintf( '
+    <p><img id="captcha" src="' . home_url() . '/wp-content/plugins/contact-form-7/securimage/securimage_show.php" alt="CAPTCHA Image" /></p>
+    <p><input type="text" name="captcha_code" size="10" maxlength="6" /></p>
+    <p><a href="#" onclick="document.getElementById(\'captcha\').src = \'' . home_url() . '/wp-content/plugins/contact-form-7/securimage/securimage_show.php?\' + Math.random(); return false">[ Different Image ]</a></p>
+    <p><input %1$s /></p>', $atts );
 
 	return $html;
 }

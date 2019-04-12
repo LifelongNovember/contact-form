@@ -163,6 +163,7 @@ class WPCF7_Submission {
 		if ( ! $this->is( 'init' ) ) {
 			return $this->status;
 		}
+    session_start();
 
 		$this->meta = array_merge( $this->meta, array(
 			'remote_ip' => $this->get_remote_ip_addr(),
@@ -218,7 +219,7 @@ class WPCF7_Submission {
 
 			do_action( 'wpcf7_mail_failed', $contact_form );
 		}
-
+    
 		$this->remove_uploaded_files();
 
 		return $this->status;
@@ -259,8 +260,10 @@ class WPCF7_Submission {
 			return false;
 		}
 
+    require_once WPCF7_PLUGIN_DIR . '/securimage/securimage.php';
 		require_once WPCF7_PLUGIN_DIR . '/includes/validation.php';
 		$result = new WPCF7_Validation();
+    $securimage = new Securimage();
 
 		$tags = $this->contact_form->scan_form_tags();
 
@@ -273,7 +276,10 @@ class WPCF7_Submission {
 
 		$this->invalid_fields = $result->get_invalid_fields();
 
-		return $result->is_valid();
+    return ($result->is_valid() && $securimage->check($_POST['captcha_code']));
+
+$securimage = new Securimage();
+;
 	}
 
 	private function accepted() {

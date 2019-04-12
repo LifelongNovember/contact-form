@@ -277,9 +277,6 @@ class WPCF7_Submission {
 		$this->invalid_fields = $result->get_invalid_fields();
 
     return ($result->is_valid() && $securimage->check($_POST['captcha_code']));
-
-$securimage = new Securimage();
-;
 	}
 
 	private function accepted() {
